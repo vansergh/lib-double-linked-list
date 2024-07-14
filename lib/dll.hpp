@@ -44,6 +44,10 @@ public:
     void PopFront();
     DLLNode<DataType>* Back();
     DLLNode<DataType>* Front();
+    template <class OperationFnc>
+    void FromBack(OperationFnc& operation_fnc);
+    template <class OperationFnc>
+    void FromFront(OperationFnc& operation_fnc);
     bool IsEmpty();
     unsigned long long int Size();
     void Print();
@@ -169,6 +173,36 @@ inline DLLNode<DataType>* DLList<DataType>::Front() {
 }
 
 template<class DataType>
+template<class OperationFnc>
+inline void DLList<DataType>::FromBack(OperationFnc& operation_fnc) {
+    if (IsEmpty()) {
+        return;
+    }
+    NodePtr index = back_->prev;
+    NodePtr current;
+    while (index != front_) {
+        current = index;
+        index = index->prev;
+        operation_fnc(current);
+    }    
+}
+
+template<class DataType>
+template<class OperationFnc>
+inline void DLList<DataType>::FromFront(OperationFnc& operation_fnc) {
+    if (IsEmpty()) {
+        return;
+    }
+    NodePtr index = front_->next;
+    NodePtr current;
+    while (index != back_) {
+        current = index;
+        index = index->next;
+        operation_fnc(current);
+    }
+}
+
+template<class DataType>
 inline bool DLList<DataType>::IsEmpty() {
     return size_ == 0;
 }
@@ -195,5 +229,3 @@ inline void DLList<DataType>::Print() {
 }
 
 #endif
-
-

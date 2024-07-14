@@ -20,7 +20,7 @@ void TestDLList() {
     std::cout << "> Back: " << list.Back()->data << std::endl;
     std::cout << "> Front: " << list.Front()->data << std::endl;
     std::cout << "> Size: " << list.Size() << std::endl;
-    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;    
+    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
     std::cout << "==============================\n";
     std::cout << "> PopFront" << std::endl;
     list.PopFront();
@@ -30,7 +30,7 @@ void TestDLList() {
     std::cout << "> Back: " << list.Back()->data << std::endl;
     std::cout << "> Front: " << list.Front()->data << std::endl;
     std::cout << "> Size: " << list.Size() << std::endl;
-    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;    
+    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
     std::cout << "==============================\n";
     std::cout << "> PopBack" << std::endl;
     list.PopBack();
@@ -40,7 +40,7 @@ void TestDLList() {
     std::cout << "> Back: " << list.Back()->data << std::endl;
     std::cout << "> Front: " << list.Front()->data << std::endl;
     std::cout << "> Size: " << list.Size() << std::endl;
-    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;    
+    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
     std::cout << "==============================\n";
     std::cout << "> PopBack" << std::endl;
     list.PopBack();
@@ -80,7 +80,7 @@ void TestDLList() {
     std::cout << "> Back: " << list.Back()->data << std::endl;
     std::cout << "> Front: " << list.Front()->data << std::endl;
     std::cout << "> Size: " << list.Size() << std::endl;
-    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;        
+    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
     std::cout << "==============================\n";
     std::cout << "> PushFront: 1, 7, 9, 12, 17" << std::endl;
     list.PushFront(1);
@@ -105,7 +105,34 @@ void TestDLList() {
     std::cout << "> Back: " << list.Back()->data << std::endl;
     std::cout << "> Front: " << list.Front()->data << std::endl;
     std::cout << "> Size: " << list.Size() << std::endl;
-    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;       
+    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
+    std::cout << "==============================\n";
+    bool from_front_first = true;
+    auto from_front = [&from_front_first](const DLLNode<int>* node) {
+        if (!from_front_first) {
+            std::cout << ", ";
+        }
+        from_front_first = false;
+        std::cout << node->data;
+        };
+    bool from_back_first = true;
+    auto from_back = [&from_back_first](const DLLNode<int>* node) {
+        if (!from_back_first) {
+            std::cout << ", ";
+        }
+        from_back_first = false;
+        std::cout << node->data;
+        };    
+    std::cout << "> FromFront: ";
+    list.FromFront(from_front);
+    std::cout << std::endl;
+    std::cout << "> FromBack: ";
+    list.FromBack(from_back);
+    std::cout << std::endl;
+    std::cout << "> Back: " << list.Back()->data << std::endl;
+    std::cout << "> Front: " << list.Front()->data << std::endl;
+    std::cout << "> Size: " << list.Size() << std::endl;
+    std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
     std::cout << "==============================\n";
     std::cout << "> Clear" << std::endl;
     list.Clear();
