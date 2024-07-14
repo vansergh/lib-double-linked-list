@@ -9,7 +9,7 @@ void TestDLList() {
     std::cout << "> Size: " << list.Size() << std::endl;
     std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
     std::cout << "==============================\n";
-    std::cout << "> PushBack: 1, 7, 9, 12, 17" << std::endl;
+    std::cout << "> PushBack: 1, 7, 9, 12" << std::endl;
     list.PushBack(1);
     list.PushBack(7);
     list.PushBack(9);
