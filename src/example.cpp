@@ -87,6 +87,7 @@ void TestDLList() {
     list.PushFront(7);
     list.PushFront(9);
     list.PushFront(12);
+    list.PushFront(17);
     std::cout << "> Print: ";
     list.Print();
     std::cout << std::endl;
