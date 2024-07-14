@@ -1,9 +1,9 @@
 ```
-==203194== Memcheck, a memory error detector
-==203194== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==203194== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==203194== Command: ./double-linked-list
-==203194==
+==203217== Memcheck, a memory error detector
+==203217== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==203217== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==203217== Command: ./double-linked-list
+==203217==
 ==============================
 > Back: 0
 > Front: 0
@@ -73,6 +73,13 @@
 > Size: 7
 > Empty: No
 ==============================
+> FromFront: 1, 12, 9, 7, 1, 9, 12
+> FromBack: 12, 9, 1, 7, 9, 12, 1
+> Back: 12
+> Front: 1
+> Size: 7
+> Empty: No
+==============================
 > Clear
 > Print: List is empty
 > Back: 0
@@ -80,12 +87,11 @@
 > Size: 0
 > Empty: Yes
 ==============================
-==203194==
-==203194== HEAP SUMMARY:
-==203194==     in use at exit: 0 bytes in 0 blocks
-==203194==   total heap usage: 15 allocs, 15 frees, 74,040 bytes allocated
-==203194==
-==203194== All heap blocks were freed -- no leaks are possible
-==203194==
-==203194== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==203217==
+==203217== HEAP SUMMARY:
+==203217==     in use at exit: 0 bytes in 0 blocks
+==203217==   total heap usage: 15 allocs, 15 frees, 74,040 bytes allocated
+==203217==
+==203217== All heap blocks were freed -- no leaks are possible
+==203217==
 ```
