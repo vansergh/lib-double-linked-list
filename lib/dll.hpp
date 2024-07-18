@@ -1,34 +1,39 @@
 #ifndef DLL_HPP
 #define DLL_HPP
 
-#include <iostream>
-
-////////////////////////////////////
-// DLLNode declaration
-//////////////////////////////////  
-
-template <typename DataType>
-struct DLLNode {
-public:
-    DLLNode(const DLLNode<DataType>&) = delete;
-    DLLNode(DLLNode<DataType>&&) = delete;
-
-    DLLNode();
-
-    DataType data;
-    DLLNode* prev{ nullptr };
-    DLLNode* next{ nullptr };
-};
-
 ////////////////////////////////////
 // DLList declaration
 //////////////////////////////////  
 
 template <typename DataType>
 class DLList {
+private:
+
+    ////////////////////////////////////
+    // DLLNode declaration
+    //////////////////////////////////  
+
+    struct DLLNode {
+    public:
+        DLLNode(const DLLNode&) = delete;
+        DLLNode(DLLNode&&) = delete;
+
+        DLLNode();
+
+        DataType data;
+        DLLNode* prev;
+        DLLNode* next;
+    };    
+
+    typedef DLLNode Node;
+    typedef Node* NodePtr;
+    typedef unsigned long long int size_t;
+
+    NodePtr front_{ nullptr };
+    NodePtr back_{ nullptr };
+    size_t size_{ 0 };
+
 public:
-    typedef DLLNode<DataType> Node;
-    typedef DLLNode<DataType>* NodePtr;
 
     DLList(const DLList&) = delete;
     DLList(DLList&&) = delete;
@@ -37,23 +42,20 @@ public:
     ~DLList();
 
     void Clear();
-    void PushBack(const DataType& data);
-    void PushFront(const DataType& data);
+    void PushBack(DataType&& data);
+    void PushFront(DataType&& data);
     void PopBack();
     void PopFront();
-    NodePtr Back();
-    NodePtr Front();
+    DataType& Back();
+    DataType& Front();
     template <typename OperationFnc>
     void FromBack(OperationFnc& operation_fnc);
     template <typename OperationFnc>
     void FromFront(OperationFnc& operation_fnc);
-    bool IsEmpty();
-    unsigned long long int Size();
-    void Print();
-private:
-    NodePtr front_{ nullptr };
-    NodePtr back_{ nullptr };
-    unsigned long long int size_{ 0 };
+    bool IsEmpty() const;
+    size_t Size() const;
+    template <typename PrintFnc>
+    void Print(const PrintFnc& print_fnc) const;
 };
 
 ////////////////////////////////////
@@ -61,11 +63,11 @@ private:
 //////////////////////////////////  
 
 template<typename DataType>
-inline DLLNode<DataType>::DLLNode() :
+inline DLList<DataType>::DLLNode::DLLNode() :
     next{ nullptr },
-    prev{ nullptr }
+    prev{ nullptr }    
 {
-    // Default constructor
+    // Default constructor    
 }
 
 ////////////////////////////////////
@@ -109,9 +111,9 @@ inline void DLList<DataType>::Clear() {
 }
 
 template<typename DataType>
-inline void DLList<DataType>::PushBack(const DataType& data) {
+inline void DLList<DataType>::PushBack(DataType&& data) {
     NodePtr newbie = new Node();
-    newbie->data = DataType(data);
+    newbie->data = data;
     NodePtr back_node = back_->prev;
     back_node->next = newbie;
     newbie->prev = back_node;
@@ -121,9 +123,9 @@ inline void DLList<DataType>::PushBack(const DataType& data) {
 }
 
 template<typename DataType>
-inline void DLList<DataType>::PushFront(const DataType& data) {
+inline void DLList<DataType>::PushFront(DataType&& data) {
     NodePtr newbie = new Node();
-    newbie->data = DataType(data);
+    newbie->data = data;
     NodePtr front_node = front_->next;
     front_node->prev = newbie;
     newbie->next = front_node;
@@ -157,13 +159,13 @@ inline void DLList<DataType>::PopFront() {
 }
 
 template<typename DataType>
-inline typename DLList<DataType>::NodePtr DLList<DataType>::Back() {
-    return IsEmpty() ? back_ : back_->prev;
+inline DataType& DLList<DataType>::Back() {
+    return IsEmpty() ? back_->data : back_->prev->data;
 }
 
 template<typename DataType>
-inline typename DLList<DataType>::NodePtr DLList<DataType>::Front() {
-    return IsEmpty() ? front_ : front_->next;
+inline DataType& DLList<DataType>::Front() {
+    return IsEmpty() ? front_->data : front_->next->data;
 }
 
 template<typename DataType>
@@ -197,29 +199,33 @@ inline void DLList<DataType>::FromFront(OperationFnc& operation_fnc) {
 }
 
 template<typename DataType>
-inline bool DLList<DataType>::IsEmpty() {
+inline bool DLList<DataType>::IsEmpty() const {
     return size_ == 0;
 }
 
 template<typename DataType>
-inline unsigned long long int DLList<DataType>::Size() {
+typename DLList<DataType>::size_t DLList<DataType>::Size() const {
     return size_;
 }
 
 template<typename DataType>
-inline void DLList<DataType>::Print() {
+template<typename PrintFnc>
+inline void DLList<DataType>::Print(const PrintFnc& print_fnc) const {
     if (IsEmpty()) {
-        std::cout << "List is empty";
+        print_fnc("List is empty");
         return;
     }
     NodePtr index = front_->next;
     while (index != back_) {
-        std::cout << "[" << index->data << "]";
+        print_fnc("[");
+        print_fnc(index->data);
+        print_fnc("]");
         if (index->next != back_) {
-            std::cout << "<=>";
+            print_fnc("<=>");
         }
         index = index->next;
     }    
 }
 
 #endif
+
