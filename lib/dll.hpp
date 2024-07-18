@@ -7,14 +7,13 @@
 // DLLNode declaration
 //////////////////////////////////  
 
-template <class DataType>
+template <typename DataType>
 struct DLLNode {
 public:
     DLLNode(const DLLNode<DataType>&) = delete;
     DLLNode(DLLNode<DataType>&&) = delete;
 
     DLLNode();
-    ~DLLNode();
 
     DataType data;
     DLLNode* prev{ nullptr };
@@ -25,7 +24,7 @@ public:
 // DLList declaration
 //////////////////////////////////  
 
-template <class DataType>
+template <typename DataType>
 class DLList {
 public:
     typedef DLLNode<DataType> Node;
@@ -42,11 +41,11 @@ public:
     void PushFront(const DataType& data);
     void PopBack();
     void PopFront();
-    DLLNode<DataType>* Back();
-    DLLNode<DataType>* Front();
-    template <class OperationFnc>
+    NodePtr Back();
+    NodePtr Front();
+    template <typename OperationFnc>
     void FromBack(OperationFnc& operation_fnc);
-    template <class OperationFnc>
+    template <typename OperationFnc>
     void FromFront(OperationFnc& operation_fnc);
     bool IsEmpty();
     unsigned long long int Size();
@@ -61,7 +60,7 @@ private:
 // DLLNode defenition
 //////////////////////////////////  
 
-template<class DataType>
+template<typename DataType>
 inline DLLNode<DataType>::DLLNode() :
     next{ nullptr },
     prev{ nullptr }
@@ -69,16 +68,11 @@ inline DLLNode<DataType>::DLLNode() :
     // Default constructor
 }
 
-template<class DataType>
-inline DLLNode<DataType>::~DLLNode() {
-    data.~DataType();
-}
-
 ////////////////////////////////////
 // DLList defenition
 //////////////////////////////////  
 
-template<class DataType>
+template<typename DataType>
 inline DLList<DataType>::DLList() :
     front_{ new Node() },
     back_{ new Node() },
@@ -90,14 +84,14 @@ inline DLList<DataType>::DLList() :
     front_->data = DataType();
 }
 
-template<class DataType>
+template<typename DataType>
 inline DLList<DataType>::~DLList() {
     Clear();
     delete back_;
     delete front_;
 }
 
-template<class DataType>
+template<typename DataType>
 inline void DLList<DataType>::Clear() {
     if (IsEmpty()) {
         return;
@@ -114,7 +108,7 @@ inline void DLList<DataType>::Clear() {
     size_ = 0;
 }
 
-template<class DataType>
+template<typename DataType>
 inline void DLList<DataType>::PushBack(const DataType& data) {
     NodePtr newbie = new Node();
     newbie->data = DataType(data);
@@ -126,7 +120,7 @@ inline void DLList<DataType>::PushBack(const DataType& data) {
     ++size_;
 }
 
-template<class DataType>
+template<typename DataType>
 inline void DLList<DataType>::PushFront(const DataType& data) {
     NodePtr newbie = new Node();
     newbie->data = DataType(data);
@@ -138,7 +132,7 @@ inline void DLList<DataType>::PushFront(const DataType& data) {
     ++size_;
 }
 
-template<class DataType>
+template<typename DataType>
 inline void DLList<DataType>::PopBack() {
     if (IsEmpty()) {
         return;
@@ -150,7 +144,7 @@ inline void DLList<DataType>::PopBack() {
     --size_;
 }
 
-template<class DataType>
+template<typename DataType>
 inline void DLList<DataType>::PopFront() {
     if (IsEmpty()) {
         return;
@@ -162,18 +156,18 @@ inline void DLList<DataType>::PopFront() {
     --size_;
 }
 
-template<class DataType>
-inline DLLNode<DataType>* DLList<DataType>::Back() {
+template<typename DataType>
+inline typename DLList<DataType>::NodePtr DLList<DataType>::Back() {
     return IsEmpty() ? back_ : back_->prev;
 }
 
-template<class DataType>
-inline DLLNode<DataType>* DLList<DataType>::Front() {
+template<typename DataType>
+inline typename DLList<DataType>::NodePtr DLList<DataType>::Front() {
     return IsEmpty() ? front_ : front_->next;
 }
 
-template<class DataType>
-template<class OperationFnc>
+template<typename DataType>
+template<typename OperationFnc>
 inline void DLList<DataType>::FromBack(OperationFnc& operation_fnc) {
     if (IsEmpty()) {
         return;
@@ -187,8 +181,8 @@ inline void DLList<DataType>::FromBack(OperationFnc& operation_fnc) {
     }    
 }
 
-template<class DataType>
-template<class OperationFnc>
+template<typename DataType>
+template<typename OperationFnc>
 inline void DLList<DataType>::FromFront(OperationFnc& operation_fnc) {
     if (IsEmpty()) {
         return;
@@ -202,17 +196,17 @@ inline void DLList<DataType>::FromFront(OperationFnc& operation_fnc) {
     }
 }
 
-template<class DataType>
+template<typename DataType>
 inline bool DLList<DataType>::IsEmpty() {
     return size_ == 0;
 }
 
-template<class DataType>
+template<typename DataType>
 inline unsigned long long int DLList<DataType>::Size() {
     return size_;
 }
 
-template<class DataType>
+template<typename DataType>
 inline void DLList<DataType>::Print() {
     if (IsEmpty()) {
         std::cout << "List is empty";
