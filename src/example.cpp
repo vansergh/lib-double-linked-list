@@ -2,9 +2,11 @@
 #include "../lib/dll.hpp"
 
 void TestDLListInt() {
-    auto print_fnc =[](const auto& item) {
-        std::cout << item;
-        };
+    auto print_fnc{
+        [](const auto& item) {
+            std::cout << item;
+        }
+    };
 
     DLList<int> list;
     std::cout << "==============================\n";
@@ -113,21 +115,25 @@ void TestDLListInt() {
     std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
     std::cout << "==============================\n";
     bool from_front_first = true;
-    auto from_front = [&from_front_first](const auto& node) {
-        if (!from_front_first) {
-            std::cout << ", ";
+    auto from_front{
+        [&from_front_first](const auto& node) {
+            if (!from_front_first) {
+                std::cout << ", ";
+            }
+            from_front_first = false;
+            std::cout << node->GetData();
         }
-        from_front_first = false;
-        std::cout << node->GetData();
-        };
+    };
     bool from_back_first = true;
-    auto from_back = [&from_back_first](const auto& node) {
-        if (!from_back_first) {
-            std::cout << ", ";
+    auto from_back{
+        [&from_back_first](const auto& node) {
+            if (!from_back_first) {
+                std::cout << ", ";
+            }
+            from_back_first = false;
+            std::cout << node->GetData();
         }
-        from_back_first = false;
-        std::cout << node->GetData();
-        };
+    };
     std::cout << "> FromFront: ";
     list.FromFront(from_front);
     std::cout << std::endl;
@@ -153,9 +159,11 @@ void TestDLListInt() {
 
 void TestDLListString() {
     using namespace std::literals;
-    auto print_fnc = [](const auto& item) {
-        std::cout << item;
-        };
+    auto print_fnc{
+        [](const auto& item) {
+            std::cout << item;
+        }
+    };
 
     DLList<std::string> list;
     std::cout << "==============================\n";
@@ -264,21 +272,25 @@ void TestDLListString() {
     std::cout << "> Empty: " << (list.IsEmpty() ? "Yes" : "No") << std::endl;
     std::cout << "==============================\n";
     bool from_front_first = true;
-    auto from_front = [&from_front_first](const auto& node) {
-        if (!from_front_first) {
-            std::cout << ", ";
+    auto from_front{
+        [&from_front_first](const auto& node) {
+            if (!from_front_first) {
+                std::cout << ", ";
+            }
+            from_front_first = false;
+            std::cout << node->GetData();
         }
-        from_front_first = false;
-        std::cout << node->GetData();
-        };
+    };
     bool from_back_first = true;
-    auto from_back = [&from_back_first](const auto& node) {
-        if (!from_back_first) {
-            std::cout << ", ";
+    auto from_back{
+        [&from_back_first](const auto& node) {
+            if (!from_back_first) {
+                std::cout << ", ";
+            }
+            from_back_first = false;
+            std::cout << node->GetData();
         }
-        from_back_first = false;
-        std::cout << node->GetData();
-        };
+    };
     std::cout << "> FromFront: ";
     list.FromFront(from_front);
     std::cout << std::endl;
@@ -303,15 +315,16 @@ void TestDLListString() {
 }
 
 int main() {
-    std::cout << "//////////////////////////////\n";
-    std::cout << "// Scalar test              //\n";
-    std::cout << "//////////////////////////////\n\n";
-    TestDLListInt();
-    std::cout << "\n//////////////////////////////\n";
-    std::cout << "// Class (std::string) test //\n";
-    std::cout << "//////////////////////////////\n\n";    
-    TestDLListString();
-
+    
+        std::cout << "//////////////////////////////\n";
+        std::cout << "// Scalar test              //\n";
+        std::cout << "//////////////////////////////\n\n";
+        TestDLListInt();
+        std::cout << "\n//////////////////////////////\n";
+        std::cout << "// Class (std::string) test //\n";
+        std::cout << "//////////////////////////////\n\n";
+        TestDLListString();
+    
     return 0;
 }
 

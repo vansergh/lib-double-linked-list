@@ -1,9 +1,9 @@
 ```
-==1110== Memcheck, a memory error detector
-==1110== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1110== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==1110== Command: ./double-linked-list
-==1110==
+==197715== Memcheck, a memory error detector
+==197715== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==197715== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==197715== Command: ./double-linked-list
+==197715==
 //////////////////////////////
 // Scalar test              //
 //////////////////////////////
@@ -179,12 +179,12 @@
 > Size: 0
 > Empty: Yes
 ==============================
-==1110==
-==1110== HEAP SUMMARY:
-==1110==     in use at exit: 0 bytes in 0 blocks
-==1110==   total heap usage: 30 allocs, 30 frees, 74,736 bytes allocated
-==1110==
-==1110== All heap blocks were freed -- no leaks are possible
-==1110==
-==1110== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==197715==
+==197715== HEAP SUMMARY:
+==197715==     in use at exit: 0 bytes in 0 blocks
+==197715==   total heap usage: 26 allocs, 26 frees, 74,592 bytes allocated
+==197715==
+==197715== All heap blocks were freed -- no leaks are possible
+==197715==
+==197715== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
