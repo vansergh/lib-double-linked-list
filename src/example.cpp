@@ -118,7 +118,7 @@ void TestDLListInt() {
             std::cout << ", ";
         }
         from_front_first = false;
-        std::cout << node->data;
+        std::cout << node->GetData();
         };
     bool from_back_first = true;
     auto from_back = [&from_back_first](const auto& node) {
@@ -126,7 +126,7 @@ void TestDLListInt() {
             std::cout << ", ";
         }
         from_back_first = false;
-        std::cout << node->data;
+        std::cout << node->GetData();
         };
     std::cout << "> FromFront: ";
     list.FromFront(from_front);
@@ -269,7 +269,7 @@ void TestDLListString() {
             std::cout << ", ";
         }
         from_front_first = false;
-        std::cout << node->data;
+        std::cout << node->GetData();
         };
     bool from_back_first = true;
     auto from_back = [&from_back_first](const auto& node) {
@@ -277,7 +277,7 @@ void TestDLListString() {
             std::cout << ", ";
         }
         from_back_first = false;
-        std::cout << node->data;
+        std::cout << node->GetData();
         };
     std::cout << "> FromFront: ";
     list.FromFront(from_front);

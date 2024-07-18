@@ -13,8 +13,11 @@ private:
     // DLLNode declaration
     //////////////////////////////////  
 
-    struct DLLNode {
+    class DLLNode {
     public:
+        DataType& GetData();
+    private:
+        friend DLList;
         DLLNode(const DLLNode&) = delete;
         DLLNode(DLLNode&&) = delete;
 
@@ -61,6 +64,12 @@ public:
 ////////////////////////////////////
 // DLLNode defenition
 //////////////////////////////////  
+
+template<typename DataType>
+inline DataType& DLList<DataType>::DLLNode::GetData()
+{
+    return data;
+}
 
 template<typename DataType>
 inline DLList<DataType>::DLLNode::DLLNode() :
