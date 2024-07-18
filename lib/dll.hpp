@@ -122,7 +122,7 @@ inline void DLList<DataType>::Clear() {
 template<typename DataType>
 inline void DLList<DataType>::PushBack(DataType&& data) {
     NodePtr newbie = new Node();
-    newbie->data = data;
+    newbie->data = std::move(data);
     NodePtr back_node = back_->prev;
     back_node->next = newbie;
     newbie->prev = back_node;
@@ -134,7 +134,7 @@ inline void DLList<DataType>::PushBack(DataType&& data) {
 template<typename DataType>
 inline void DLList<DataType>::PushFront(DataType&& data) {
     NodePtr newbie = new Node();
-    newbie->data = data;
+    newbie->data = std::move(data);
     NodePtr front_node = front_->next;
     front_node->prev = newbie;
     newbie->next = front_node;
