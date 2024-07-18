@@ -22,11 +22,12 @@ private:
         DLLNode(DLLNode&&) = delete;
 
         DLLNode();
+        DLLNode(DataType&& in_data, DLLNode* in_prev, DLLNode* in_next);
 
         DataType data;
         DLLNode* prev;
         DLLNode* next;
-    };    
+    };
 
     typedef DLLNode Node;
     typedef Node* NodePtr;
@@ -40,7 +41,7 @@ public:
 
     DLList(const DLList&) = delete;
     DLList(DLList&&) = delete;
-    
+
     DLList();
     ~DLList();
 
@@ -66,17 +67,24 @@ public:
 //////////////////////////////////  
 
 template<typename DataType>
-inline DataType& DLList<DataType>::DLLNode::GetData()
-{
+inline DataType& DLList<DataType>::DLLNode::GetData() {
     return data;
 }
 
 template<typename DataType>
 inline DLList<DataType>::DLLNode::DLLNode() :
-    next{ nullptr },
-    prev{ nullptr }    
+    DLLNode(DataType(), nullptr, nullptr)
 {
-    // Default constructor    
+    // Default constructor
+}
+
+template<typename DataType>
+inline DLList<DataType>::DLLNode::DLLNode(DataType&& in_data, DLList<DataType>::DLLNode* in_prev, DLList<DataType>::DLLNode* in_next) :
+    data{ std::move(in_data) },
+    next{ in_next },
+    prev{ in_prev }
+{
+    // Parametrized copy & move constructor
 }
 
 ////////////////////////////////////
@@ -90,9 +98,7 @@ inline DLList<DataType>::DLList() :
     size_{ 0 }
 {
     back_->prev = front_;
-    back_->data = DataType();
     front_->next = back_;
-    front_->data = DataType();
 }
 
 template<typename DataType>
@@ -121,24 +127,18 @@ inline void DLList<DataType>::Clear() {
 
 template<typename DataType>
 inline void DLList<DataType>::PushBack(DataType&& data) {
-    NodePtr newbie = new Node();
-    newbie->data = std::move(data);
     NodePtr back_node = back_->prev;
+    NodePtr newbie = new Node(std::move(data), back_node, back_);
     back_node->next = newbie;
-    newbie->prev = back_node;
-    newbie->next = back_;
     back_->prev = newbie;
     ++size_;
 }
 
 template<typename DataType>
 inline void DLList<DataType>::PushFront(DataType&& data) {
-    NodePtr newbie = new Node();
-    newbie->data = std::move(data);
     NodePtr front_node = front_->next;
+    NodePtr newbie = new Node(std::move(data), front_, front_node);
     front_node->prev = newbie;
-    newbie->next = front_node;
-    newbie->prev = front_;
     front_->next = newbie;
     ++size_;
 }
@@ -189,7 +189,7 @@ inline void DLList<DataType>::FromBack(OperationFnc& operation_fnc) {
         current = index;
         index = index->prev;
         operation_fnc(current);
-    }    
+    }
 }
 
 template<typename DataType>
@@ -233,7 +233,7 @@ inline void DLList<DataType>::Print(const PrintFnc& print_fnc) const {
             print_fnc("<=>");
         }
         index = index->next;
-    }    
+    }
 }
 
 #endif
