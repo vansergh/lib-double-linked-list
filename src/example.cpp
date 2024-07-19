@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../lib/dll.hpp"
-
+ 
 void TestDLListInt() {
     auto print_fnc{
         [](const auto& item) {
@@ -314,17 +314,110 @@ void TestDLListString() {
     std::cout << "==============================\n";
 }
 
+void TestCopyMove() {
+    using namespace std::literals;
+    auto print_fnc{
+        [](const auto& item) {
+            std::cout << item;
+        }
+    };
+
+    
+    std::cout << "==============================\n";
+    std::cout << "> Initialization\n";
+    std::cout << "==============================\n";
+
+    std::cout << "> DLList<std::string> list1 = DLList<std::string>({ \"hello\"s,\"world\"s }); // std::initializer_list&& <- move" << std::endl;
+    DLList<std::string> list1 = DLList<std::string>({ "hello"s,"world"s });
+
+    std::cout << "> DLList<std::string> list2 = DLList<std::string>({ \"BOSS\"s,\"OFFICE\"s },InitListPushType::BACK); // std::initializer_list&& <- move" << std::endl;
+    DLList<std::string> list2 = DLList<std::string>({ "BOSS"s,"OFFICE"s }, InitListPushType::BACK);
+    
+    std::cout << "> DLList<std::string> list3 = {\"blue\"s,\"red\"s}; // std::initializer_list&& <- move" << std::endl;
+    DLList<std::string> list3 = { "blue"s,"red"s };
+
+    std::cout << "> DLList<std::string> list4({ \"cat\", \"dog\" }); // std::initializer_list&& <- move" << std::endl;
+    DLList<std::string> list4({ "cat", "dog" });
+    
+    std::cout << "> DLList<std::string> list5({ \"1\", \"2\", \"3\", \"4\", \"5\" }, InitListPushType::FRONT); // std::initializer_list&& <- move" << std::endl;
+    DLList<std::string> list5({ "1", "2", "3", "4", "5" }, InitListPushType::FRONT);
+
+    std::cout << "> DLList<std::string> list6; // <- default empty constructor" << std::endl;
+    DLList<std::string> list6;
+    std::cout << "> list6.PushBack(\"one\");" << std::endl;
+    std::cout << "> list6.PushBack(\"two\");" << std::endl;
+    std::cout << "> list6.PushBack(\"five\");" << std::endl;
+    std::cout << "> list6.PushFront(\"seven\");" << std::endl;
+    std::cout << "> list6.PushBack(\"eleven\");" << std::endl;
+    list6.PushBack("one");
+    list6.PushBack("two");
+    list6.PushBack("five");
+    list6.PushFront("seven");
+    list6.PushBack("eleven");
+    std::cout << "==============================\n";
+    std::cout << "> Print list1: ";list1.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list2: ";list2.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list3: ";list3.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list4: ";list4.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list5: ";list5.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list6: ";list6.Print(print_fnc);std::cout << std::endl;
+    std::cout << "==============================\n";
+    std::cout << "> Copy\n";
+    std::cout << "==============================\n";
+    std::cout << "> Print list1: ";list1.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> {" << std::endl;
+    std::cout << "> \tDLList<std::string> list_r1 = list1;" << std::endl;
+    {
+        DLList<std::string> list_r1 = list1;
+        std::cout << "> \tPrint list_r1: ";list_r1.Print(print_fnc);std::cout << std::endl;
+        std::cout << "> \tPrint list1: ";list1.Print(print_fnc);std::cout << std::endl;        
+    }
+    std::cout << "> }" << std::endl;
+    std::cout << "> Print list1: ";list1.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> list_r1 deleted" << std::endl;
+    std::cout << "==============================\n";
+    std::cout << "> Print list2: ";list2.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> DLList<std::string> list_r2(list2);" << std::endl;
+    DLList<std::string> list_r2(list2);
+    std::cout << "> Print list_r2: ";list_r2.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list2: ";list2.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> list_r2.Clear();" << std::endl;
+    list_r2.Clear();
+    std::cout << "> Print list_r2: ";list_r2.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list2: ";list2.Print(print_fnc);std::cout << std::endl;    
+    std::cout << "==============================\n";    
+    std::cout << "> Move\n";
+    std::cout << "==============================\n";
+    std::cout << "> Print list3: ";list3.Print(print_fnc);std::cout << std::endl;    
+    std::cout << "> DLList<std::string> list_r3;" << std::endl;
+    DLList<std::string> list_r3;
+    std::cout << "> list_r3 = std::move(list3);" << std::endl;
+    list_r3 = std::move(list3);
+    std::cout << "> Print list3: ";list3.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list_r3: ";list_r3.Print(print_fnc);std::cout << std::endl;
+    std::cout << "==============================\n";
+    std::cout << "> Print list4: ";list4.Print(print_fnc);std::cout << std::endl;    
+    std::cout << "> DLList<std::string> list_r4(std::move(list4));" << std::endl;
+    DLList<std::string> list_r4(std::move(list4));
+    std::cout << "> Print list4: ";list4.Print(print_fnc);std::cout << std::endl;
+    std::cout << "> Print list_r4: ";list_r4.Print(print_fnc);std::cout << std::endl;
+    std::cout << "==============================\n";
+}
+
 int main() {
-    
-        std::cout << "//////////////////////////////\n";
-        std::cout << "// Scalar test              //\n";
-        std::cout << "//////////////////////////////\n\n";
-        TestDLListInt();
-        std::cout << "\n//////////////////////////////\n";
-        std::cout << "// Class (std::string) test //\n";
-        std::cout << "//////////////////////////////\n\n";
-        TestDLListString();
-    
+   
+    std::cout << "//////////////////////////////\n";
+    std::cout << "// Scalar test              //\n";
+    std::cout << "//////////////////////////////\n\n";
+    TestDLListInt();
+    std::cout << "\n//////////////////////////////\n";
+    std::cout << "// Class (std::string) test //\n";
+    std::cout << "//////////////////////////////\n\n";
+    TestDLListString();
+    std::cout << "\n//////////////////////////////\n";
+    std::cout << "// Copy & Move test         //\n";
+    std::cout << "//////////////////////////////\n\n";
+    TestCopyMove();
     return 0;
 }
 
