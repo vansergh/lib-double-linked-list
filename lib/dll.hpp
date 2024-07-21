@@ -69,9 +69,9 @@ public:
     DataType& Back();
     DataType& Front();
     template <typename OperationFnc>
-    void FromBack(OperationFnc& operation_fnc);
+    void FromBack(OperationFnc&& operation_fnc);
     template <typename OperationFnc>
-    void FromFront(OperationFnc& operation_fnc);
+    void FromFront(OperationFnc&& operation_fnc);
     bool IsEmpty() const;
     size_t Size() const;
     template <typename PrintFnc>
@@ -353,7 +353,7 @@ inline DataType& DLList<DataType>::Front() {
 
 template<typename DataType>
 template<typename OperationFnc>
-inline void DLList<DataType>::FromBack(OperationFnc& operation_fnc) {
+inline void DLList<DataType>::FromBack(OperationFnc&& operation_fnc) {
     if (IsEmpty()) {
         return;
     }
@@ -366,7 +366,7 @@ inline void DLList<DataType>::FromBack(OperationFnc& operation_fnc) {
 
 template<typename DataType>
 template<typename OperationFnc>
-inline void DLList<DataType>::FromFront(OperationFnc& operation_fnc) {
+inline void DLList<DataType>::FromFront(OperationFnc&& operation_fnc) {
     if (IsEmpty()) {
         return;
     }
