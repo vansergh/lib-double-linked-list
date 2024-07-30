@@ -20,7 +20,7 @@ private:
 
     class DLLNode {
     public:
-        DataType& GetData();        
+        DataType& GetData() noexcept;
     private:
         friend DLList;
 
@@ -46,7 +46,7 @@ private:
     NodePtr back_;
 
     NodePtr CopyNodes_(const DLList& other);
-    NodePtr InitFromList_(std::initializer_list<DataType> init_list, InitListPushType push_type);    
+    NodePtr InitFromList_(std::initializer_list<DataType> init_list, InitListPushType push_type);
 
 public:
 
@@ -59,21 +59,21 @@ public:
     DLList& operator=(const DLList& other);
     DLList& operator=(DLList&& other);
 
-    void Clear();
+    void Clear() noexcept;
     void PushBack(DataType&& data);
     void PushBack(const DataType& data);
     void PushFront(DataType&& data);
     void PushFront(const DataType& data);
-    void PopBack();
-    void PopFront();
-    DataType& Back();
-    DataType& Front();
+    void PopBack() noexcept;
+    void PopFront() noexcept;
+    DataType& Back() noexcept;
+    DataType& Front() noexcept;
     template <typename OperationFnc>
-    void FromBack(OperationFnc&& operation_fnc);
+    void FromBack(OperationFnc&& operation_fnc) const;
     template <typename OperationFnc>
-    void FromFront(OperationFnc&& operation_fnc);
-    bool IsEmpty() const;
-    size_t Size() const;
+    void FromFront(OperationFnc&& operation_fnc) const;
+    bool IsEmpty() const noexcept;
+    size_t Size() const noexcept;
     template <typename PrintFnc>
     void Print(const PrintFnc& print_fnc) const;
 };
@@ -83,7 +83,7 @@ public:
 //////////////////////////////////  
 
 template<typename DataType>
-inline DataType& DLList<DataType>::DLLNode::GetData() {
+inline DataType& DLList<DataType>::DLLNode::GetData() noexcept {
     return data;
 }
 
@@ -94,10 +94,10 @@ inline DLList<DataType>::DLLNode::DLLNode(DataType&& in_data, DLList<DataType>::
     prev{ in_next }
 {
     if (in_prev != nullptr) {
-        in_prev->prev = this;    
+        in_prev->prev = this;
     }
     if (in_next != nullptr) {
-        in_next->next =  this;    
+        in_next->next = this;
     }
 }
 
@@ -108,10 +108,10 @@ inline DLList<DataType>::DLLNode::DLLNode(const DataType& in_data, DLList<DataTy
     prev{ in_next }
 {
     if (in_prev != nullptr) {
-        in_prev->prev = this;    
+        in_prev->prev = this;
     }
     if (in_next != nullptr) {
-        in_next->next =  this;    
+        in_next->next = this;
     }
 }
 
@@ -136,7 +136,7 @@ inline typename DLList<DataType>::NodePtr DLList<DataType>::CopyNodes_(const DLL
     index = index->prev;
 
     while (index != other.back_) {
-        back_ = new Node(index->data, front_, back_);      
+        back_ = new Node(index->data, front_, back_);
         index = index->prev;
     }
 
@@ -155,7 +155,7 @@ inline typename DLList<DataType>::NodePtr DLList<DataType>::InitFromList_(std::i
     else {
         for (auto it = init_list.begin(); it != init_list.end(); ++it) {
             PushFront(*it);
-        }        
+        }
     }
     return front_;
 }
@@ -230,7 +230,7 @@ inline DLList<DataType>& DLList<DataType>::operator=(DLList&& other) {
 }
 
 template<typename DataType>
-inline void DLList<DataType>::Clear() {
+inline void DLList<DataType>::Clear() noexcept {
     if (IsEmpty()) {
         return;
     }
@@ -241,11 +241,11 @@ inline void DLList<DataType>::Clear() {
             current = index;
             index = index->next;
             delete current;
-        }        
+        }
     }
     delete back_;
     front_ = nullptr;
-    back_ = nullptr;    
+    back_ = nullptr;
     size_ = 0;
 }
 
@@ -272,7 +272,7 @@ inline void DLList<DataType>::PushBack(const DataType& data) {
         back_->next = front_;
         back_->prev = front_;
     }
-    ++size_;    
+    ++size_;
 }
 
 template<typename DataType>
@@ -298,11 +298,11 @@ inline void DLList<DataType>::PushFront(const DataType& data) {
         front_->next = back_;
         front_->prev = back_;
     }
-    ++size_;    
+    ++size_;
 }
 
 template<typename DataType>
-inline void DLList<DataType>::PopBack() {
+inline void DLList<DataType>::PopBack() noexcept {
     if (IsEmpty()) {
         return;
     }
@@ -322,7 +322,7 @@ inline void DLList<DataType>::PopBack() {
 }
 
 template<typename DataType>
-inline void DLList<DataType>::PopFront() {
+inline void DLList<DataType>::PopFront() noexcept {
     if (IsEmpty()) {
         return;
     }
@@ -342,18 +342,18 @@ inline void DLList<DataType>::PopFront() {
 }
 
 template<typename DataType>
-inline DataType& DLList<DataType>::Back() {
+inline DataType& DLList<DataType>::Back() noexcept {
     return IsEmpty() ? empty_ : back_->data;
 }
 
 template<typename DataType>
-inline DataType& DLList<DataType>::Front() {
+inline DataType& DLList<DataType>::Front() noexcept {
     return IsEmpty() ? empty_ : front_->data;
 }
 
 template<typename DataType>
 template<typename OperationFnc>
-inline void DLList<DataType>::FromBack(OperationFnc&& operation_fnc) {
+inline void DLList<DataType>::FromBack(OperationFnc&& operation_fnc) const {
     if (IsEmpty()) {
         return;
     }
@@ -366,7 +366,7 @@ inline void DLList<DataType>::FromBack(OperationFnc&& operation_fnc) {
 
 template<typename DataType>
 template<typename OperationFnc>
-inline void DLList<DataType>::FromFront(OperationFnc&& operation_fnc) {
+inline void DLList<DataType>::FromFront(OperationFnc&& operation_fnc) const {
     if (IsEmpty()) {
         return;
     }
@@ -378,12 +378,12 @@ inline void DLList<DataType>::FromFront(OperationFnc&& operation_fnc) {
 }
 
 template<typename DataType>
-inline bool DLList<DataType>::IsEmpty() const {
+inline bool DLList<DataType>::IsEmpty() const noexcept {
     return size_ == 0;
 }
 
 template<typename DataType>
-typename DLList<DataType>::size_t DLList<DataType>::Size() const {
+typename DLList<DataType>::size_t DLList<DataType>::Size() const noexcept {
     return size_;
 }
 
